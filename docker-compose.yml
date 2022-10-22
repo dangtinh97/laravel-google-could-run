@@ -5,7 +5,7 @@ services:
     nginx:
         container_name: nginx
         image: nginx:alpine
-        build: ./docker/nginx
+        build: ./docker
         command: nginx -g "daemon off;"
         restart: unless-stopped
         tty: true
@@ -23,10 +23,10 @@ services:
     #PHP Service
     php:
         container_name: php
-        image: php
-        build: ./docker/php
+        image: php:8.1
+        build: ./docker
         ports:
-            - "9000:9000"
+            - "8080:8080"
         volumes:
             - ./:/var/www/html
             - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
@@ -34,51 +34,51 @@ services:
         networks:
             - app-network
 
-    #composer Service
-    composer:
-        container_name: composer
-        image: composer
-        volumes:
-            - ./:/var/www/html
-        working_dir: /var/www/html
-        command: install
-        networks:
-            - app-network
-
-    #mysql Service
-    mysql:
-        image: mysql:8.0
-        container_name: mysql
-        restart: unless-stopped
-        tty: true
-        ports:
-            - "3306:3306"
-        environment:
-            MYSQL_ROOT_PASSWORD: laravel@2022
-            MYSQL_DATABASE: laravel_dev
-            SERVICE_TAGS: dev
-            SERVICE_NAME: mysql
-        volumes:
-            - dbdata:/var/lib/mysql/
-            - ./docker/mysql/my.cnf:/etc/mysql/my.cnf
-        networks:
-            - app-network
-
-    #phpmyadmin Service
-    phpmyadmin:
-        image: phpmyadmin
-        container_name: phpmyadmin
-        links:
-            - mysql
-        environment:
-            PMA_HOST: mysql
-            PMA_PORT: 3306
-            PMA_ARBITRARY: 1
-        restart: always
-        ports:
-            - 8085:80
-        networks:
-            - app-network
+#    #composer Service
+#    composer:
+#        container_name: composer
+#        image: composer
+#        volumes:
+#            - ./:/var/www/html
+#        working_dir: /var/www/html
+#        command: install
+#        networks:
+#            - app-network
+#
+#    #mysql Service
+#    mysql:
+#        image: mysql:8.0
+#        container_name: mysql
+#        restart: unless-stopped
+#        tty: true
+#        ports:
+#            - "3306:3306"
+#        environment:
+#            MYSQL_ROOT_PASSWORD: laravel@2022
+#            MYSQL_DATABASE: laravel_dev
+#            SERVICE_TAGS: dev
+#            SERVICE_NAME: mysql
+#        volumes:
+#            - dbdata:/var/lib/mysql/
+#            - ./docker/mysql/my.cnf:/etc/mysql/my.cnf
+#        networks:
+#            - app-network
+#
+#    #phpmyadmin Service
+#    phpmyadmin:
+#        image: phpmyadmin
+#        container_name: phpmyadmin
+#        links:
+#            - mysql
+#        environment:
+#            PMA_HOST: mysql
+#            PMA_PORT: 3306
+#            PMA_ARBITRARY: 1
+#        restart: always
+#        ports:
+#            - 8085:80
+#        networks:
+#            - app-network
 
 #Docker Networks
 networks:
