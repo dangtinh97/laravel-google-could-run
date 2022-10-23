@@ -1,41 +1,47 @@
-FROM nginx:1.20
-ADD nginx/laravel.nginx.conf /etc/nginx/conf.d/default.conf
+FROM dwchiang/nginx-php-fpm:latest
+
+COPY ../ /var/www/html/public
+
+EXPOSE 8080
+
+#FROM nginx:1.20
+#ADD nginx/laravel.nginx.conf /etc/nginx/conf.d/default.conf
 
 #FROM php:8.1-fpm
 
-RUN apt-get update
-RUN apt-get install -y openssl zip unzip git curl
-RUN apt-get install -y libzip-dev libonig-dev libicu-dev
-RUN apt-get install -y autoconf pkg-config libssl-dev
-RUN apt-get install php8.1 php8.1-fpm
+#RUN apt-get update
+#RUN apt-get install -y openssl zip unzip git curl
+#RUN apt-get install -y libzip-dev libonig-dev libicu-dev
+#RUN apt-get install -y autoconf pkg-config libssl-dev
+#RUN apt-get install php8.1 php8.1-fpm
 
-WORKDIR /var/www
-
-# Install dependencies
-RUN apt-get update && apt-get install -y \
-    build-essential \
-    libpng-dev \
-    libjpeg62-turbo-dev \
-    libfreetype6-dev \
-    locales \
-    zip \
-    jpegoptim optipng pngquant gifsicle \
-    vim \
-    unzip \
-    git \
-    curl
-
-RUN docker-php-ext-install bcmath mbstring intl opcache
-
-RUN docker-php-ext-install pdo pdo_mysql mysqli
-
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
-
-RUN groupadd -g 1000 docker
-RUN useradd -u 1000 -ms /bin/bash -g docker docker
-
-COPY --chown=docker:docker . /var/www/html
-
-USER docker
-
-EXPOSE 8080
+#WORKDIR /var/www
+#
+## Install dependencies
+#RUN apt-get update && apt-get install -y \
+#    build-essential \
+#    libpng-dev \
+#    libjpeg62-turbo-dev \
+#    libfreetype6-dev \
+#    locales \
+#    zip \
+#    jpegoptim optipng pngquant gifsicle \
+#    vim \
+#    unzip \
+#    git \
+#    curl
+#
+#RUN docker-php-ext-install bcmath mbstring intl opcache
+#
+#RUN docker-php-ext-install pdo pdo_mysql mysqli
+#
+#RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+#
+#RUN groupadd -g 1000 docker
+#RUN useradd -u 1000 -ms /bin/bash -g docker docker
+#
+#COPY --chown=docker:docker . /var/www/html
+#
+#USER docker
+#
+#EXPOSE 8080
