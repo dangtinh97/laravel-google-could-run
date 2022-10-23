@@ -1,6 +1,8 @@
 FROM dwchiang/nginx-php-fpm:latest
 
-COPY ../ /var/www/html/public
+COPY .. /var/www/html/public
+
+RUN ls /var/www/html/public
 
 EXPOSE 8080
 
